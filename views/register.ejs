@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="register-body">
+    <div class="register-container">
+        <h2>Register</h2>
+        <form action="/auth/register" method="POST">
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama" required>
+
+            <label for="alamat">Alamat</label>
+            <input type="text" id="alamat" name="alamat" required>
+
+            <label for="telepon">Telepon</label>
+            <input type="text" id="telepon" name="telepon" required>
+
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" name="username" required>
+
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" name="password" required>
+
+            <button type="submit">Daftar</button>
+        </form>
+    </div>
+</body>
+</html>

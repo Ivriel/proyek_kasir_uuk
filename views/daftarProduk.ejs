@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Produk</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="daftar-produk-body">
+    <h1>Daftar Produk</h1>
+    <div class="cart-container">
+        <% produkList.forEach(produk => { %>
+            <div class="cart-item">
+                <img src="/image/<%= produk.Gambar %>" alt="Foto Produk" width="100">
+                <div class="cart-item-info">
+                    <p><strong>Nama Produk:</strong> <%= produk.Nama %></p>
+                    <p><strong>Harga Produk:</strong> <%= produk.Harga %></p>
+                    <p><strong>Stok:</strong> <%= produk.Stok %></p>
+                </div>
+                <a href="/produk/edit/<%= produk.id %>" class="btn btn-primary">Update</a>
+                <a href="/produk/delete/<%= produk.id %>" class="btn btn-primary">Delete</a>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
