@@ -41,6 +41,52 @@ const authController = {
             console.error(error)
             res.status(500).send("Terjadi kesalahan saat registrasi")
         }
+    },
+    login: async(req,res) =>{
+        try {
+            const {username,password} = req.body
+            
+            // Validate input
+            if (!username || !password) {
+                return res.status(400).send("Username dan password harus diisi")
+            }
+
+            // Find user
+            const user = await User.findOne({username: username})
+            if(!user) {
+                return res.status(400).send("Username atau password salah")
+            }
+
+            // Validate password
+            const validPassword = await bcrypt.compare(password, user.password)
+            if (!validPassword) {
+                return res.status(400).send("Username atau password salah")
+            }
+
+            // Set session data
+            req.session.user = {
+                id: user._id,
+                username: user.username,
+                role: user.role
+            }
+            if(user.role === "Admin" || user.role==="Petugas") {
+                res.redirect("/produk")
+            } else {
+                res.redirect("/produk/pelanggan")
+            }
+        } catch (error) {
+            console.error("Login error:", error)
+            res.status(500).send("Terjadi kesalahan saat login")
+        }
+    },
+    logout: async(req,res) => {
+        req.session.destroy((err)=>{
+            if(err) {
+                console.error(err)
+                return res.status(500).send("Gagal Logout")
+            }
+            res.redirect("/auth/login")
+        })
     }
 }
 
