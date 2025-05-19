@@ -7,31 +7,35 @@ const port = process.env.PORT;
 const path = require("path")
 const session = require("express-session")
 
-const authRoutes = require("./routes/authRoutes")
-const produkRoutes = require("./routes/produkRoutes")
-
 mongoDB();
 
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,"views"))
 app.use(express.static(path.join(__dirname,"public")))
 
-app.use("/auth",authRoutes)
-app.use("/produk",produkRoutes)
+// Move these BEFORE routes
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+// Add session middleware BEFORE routes
 app.use(
     session({
         secret:"project-uuk-kasir",
-        resave:false, // hindari menyimpan ulang session jika tidak berubah
-        saveUninitialized:false, // tidak menyimpan session kosong
+        resave:false,
+        saveUninitialized:false,
         cookie: {
-            secure:false, // ubah ke true kalau pakai https
-            maxAge:1000 * 60 * 60 // 1 jam
+            secure:false,
+            maxAge:1000 * 60 * 60
         }
     })
 )
+
+// Routes should come AFTER all middleware
+const authRoutes = require("./routes/authRoutes")
+const produkRoutes = require("./routes/produkRoutes")
+
+app.use("/auth",authRoutes)
+app.use("/produk",produkRoutes)
 
 app.get("/",(req,res)=> {
     res.redirect("/auth/login")

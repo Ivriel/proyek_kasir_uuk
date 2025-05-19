@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Produk</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tambah-produk-body">
+    <%- include('layout/sidebar') %>
+    <div class="tambah-produk-container">
+        <h1>Tambah Produk</h1>
+        <form action="/produk/tambah" method="POST" enctype="multipart/form-data">
+            <label for="namaproduk">Nama Produk</label>
+            <input type="text" name="namaproduk" id="namaproduk" required><br>
+
+            <label for="harga">Harga</label>
+            <input type="text" name="harga" id="harga" required><br>
+
+            <label for="stok">Stok</label>
+            <input type="number" name="stok" id="stok" required><br>
+
+            <label for="gambar">Gambar</label>
+            <input type="file" id="gambar" name="gambar" required><br>
+
+            <button type="submit">Tambah</button>
+        </form>
+    </div>
+</body>
+</html>

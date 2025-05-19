@@ -14,12 +14,12 @@
             <div class="cart-item">
                 <img src="/image/<%= produk.Gambar %>" alt="Foto Produk" width="100">
                 <div class="cart-item-info">
-                    <p><strong>Nama Produk:</strong> <%= produk.Nama %></p>
+                    <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
                     <p><strong>Harga Produk:</strong> <%= produk.Harga %></p>
                     <p><strong>Stok:</strong> <%= produk.Stok %></p>
                 </div>
-                <a href="/produk/edit/<%= produk.id %>" class="btn btn-primary">Update</a>
-                <a href="/produk/delete/<%= produk.id %>" class="btn btn-primary">Delete</a>
+                <a href="/produk/edit/<%= produk._id %>" class="btn btn-primary">Update</a>
+                <a href="/produk/delete/<%= produk._id %>" class="btn btn-primary">Delete</a>
             </div>
         <% }); %>
     </div>

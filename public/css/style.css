@@ -3,7 +3,7 @@
     font-family: Arial,sans-serif;
 }
 
-.login-body,.register-body {
+.login-body,.register-body, .edit-produk-body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +34,7 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-.register-container, .login-container{
+.register-container, .login-container, .tambah-produk-container, .edit-produk-container{
     width: 1000px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -135,4 +135,12 @@ button:hover, .btn:hover {
 .logout-form {
     margin-top: auto;
     padding: 10px;
+}
+.tambah-produk-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    padding-left: 260px;
 }
