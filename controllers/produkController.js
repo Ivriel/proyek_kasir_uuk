@@ -65,11 +65,11 @@ const produkController = {
                 }
             }
 
-            // update jika ada input baru, kalau kosong tetap pakai nilai yang lama
+            // update kalo ada input baru, kalau kosong tetap pakai nilai yang lama
             produk.NamaProduk = namaproduk // karena sudah ada value di input, gausah pakai OR
             produk.Harga = harga
             produk.Stok = stok
-            if (gambarPath) {  // Only update Gambar if new image is uploaded
+            if (gambarPath) {  //Update gambar kalau ada gambar yang diupload. Kalau ga ya tetap
                 produk.Gambar = gambarPath
             }
 
