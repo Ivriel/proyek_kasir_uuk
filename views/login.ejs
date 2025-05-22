@@ -7,19 +7,22 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="login-body">
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="/auth/login" method="POST">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+     <div class="login-container">
+    <h1>Login</h1>
+    <h3>Access Your Account</h3>
+    <form action="/auth/login" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Masukkan username anda..." required>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Masukkan password anda..." required>
 
-            <a href="/auth/register">Register</a>
+      <button type="submit">Login</button>
 
-            <button type="submit">Masuk</button>
-        </form>
-    </div>
+      <p class="register-text">
+        Don't have an account? <a href="/auth/register">Register</a>
+      </p>
+    </form>
+  </div>
 </body>
 </html>

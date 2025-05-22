@@ -1,12 +1,16 @@
 <aside class="sidebar">
     <h1>KasirKita</h1>
+    <h4>Role: <%= user.role %></h4>
+    <hr class="sidebar-divider"/>
     <nav>
         <ul>
-            <li>  <a href="/produk">Daftar Produk</a></li>
-          <li><a href="/produk/tambah">Tambah Produk</a></li>
+            <li><a href="/produk" class="<%= path === '/produk' ? 'active' : '' %>">Daftar Produk</a></li>
+            <li><a href="/produk/tambah" class="<%= path === '/produk/tambah' ? 'active' : '' %>">Tambah Produk</a></li>
+            <li><a href="/produk/pelanggan" class="<%= path === '/produk/pelanggan' ? 'active' : '' %>">Daftar Produk Pelanggan</a></li>
+            <li><a href="/pembelian/checkout" class="<%= path === '/pembelian/checkout' ? 'active' : '' %>">Keranjang</a></li>
         </ul>
     </nav>
     <form action="/auth/logout" method="GET" class="logout-form">
-        <button type="submit">Logout</button>
+        <button type="submit" class="logout-form-button">Logout</button>
     </form>
 </aside>

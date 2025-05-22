@@ -6,7 +6,7 @@ const produkController = {
     getDaftarProduk: async(req,res) => {
         try {
             const produkList = await Produk.find()
-            res.render('daftarProduk',{produkList})
+            res.render('daftarProduk',{produkList, path: '/produk'})
         } catch (error) {
             console.error("Error fetching products:",error)
             res.status(500).send("Internal Server Error")
@@ -14,7 +14,7 @@ const produkController = {
     },
     getTambahProduk: async(req,res) =>{
         try {
-            res.render('formTambahProduk')
+            res.render('formTambahProduk', {path: '/produk/tambah'})
         } catch (error) {
             console.error("Error fetching products:",error)
             res.status(500).send("Internal Server Error")
@@ -49,7 +49,7 @@ const produkController = {
     },
     editProduk:async(req,res)=> {
         try {
-            const produkId = req.params.id
+            const produkId = req.params.id // cari produk berdasarkan ID
             const {namaproduk,harga,stok} = req.body
             const gambarPath = req.file? req.file.filename : null
 
@@ -89,7 +89,7 @@ const produkController = {
             if(!produk) {
                 return res.status(404).send("Produk tidak ditemukan")
             }
-            // Hapus gambar kalau ada gambarnya 
+            // Hapus gambar sekalian 
             if(produk.Gambar) {
                 const imagePath = path.join(__dirname,'../public/image/',produk.Gambar)
                 if(fs.existsSync(imagePath)) {
@@ -102,6 +102,15 @@ const produkController = {
             res.redirect('/produk')
         } catch (error) {
             console.error("Error deleting products: ",error)
+            res.status(500).send("Internal Server Error")
+        }
+    },
+    getDaftarProdukPelanggan: async(req,res) => {
+        try {
+            const produkList = await Produk.find({Stok:{$gt:0}})
+            res.render('daftarProdukPelanggan',{produkList, path: '/produk/pelanggan'})// buat penanda link aktif
+        } catch (error) {
+            console.error("Error fetching products: ",error)
             res.status(500).send("Internal Server Error")
         }
     }

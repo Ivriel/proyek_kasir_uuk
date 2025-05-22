@@ -8,18 +8,21 @@
 </head>
 <body class="daftar-produk-body">
     <%- include('layout/sidebar') %>
-    <h1>Daftar Produk</h1>
+    <h1 class="daftar-produk-title">Daftar Produk</h1>
     <div class="cart-container">
         <% produkList.forEach(produk => { %>
             <div class="cart-item">
                 <img src="/image/<%= produk.Gambar %>" alt="Foto Produk" width="100">
                 <div class="cart-item-info">
-                    <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
-                    <p><strong>Harga Produk:</strong> <%= produk.Harga %></p>
-                    <p><strong>Stok:</strong> <%= produk.Stok %></p>
+                    <p><strong>Nama:</strong> <%= produk.NamaProduk %></p>
+                    <p><strong>Harga:</strong> Rp <%= produk.Harga.toLocaleString() %></p>
+                    <p><strong>Stok:</strong> <%= produk.Stok.toLocaleString() %></p>
+                    <hr class="daftar-produk-divider">
                 </div>
-                <a href="/produk/edit/<%= produk._id %>" class="btn btn-primary">Update</a>
-                <a href="/produk/delete/<%= produk._id %>" class="btn btn-primary">Delete</a>
+                <div class="daftar-produk-actions">
+                    <a href="/produk/edit/<%= produk._id %>" class="action-button-daftar-produk-edit">Edit</a>
+                    <a href="/produk/delete/<%= produk._id %>" class="action-button-daftar-produk-delete">Hapus</a>
+                </div>
             </div>
         <% }); %>
     </div>

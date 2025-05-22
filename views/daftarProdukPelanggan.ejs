@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Produk</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="daftar-produk-body">
+  <%- include('layout/sidebar') %>
+  <h1 class="daftar-produk-title">Daftar Produk Pelanggan</h1>
+  <div class="cart-container">
+    <% produkList.forEach(produk => { %>
+      <div class="cart-item">
+        <img src="/image/<%= produk.Gambar %>" alt="Gambar Produk" width="100">
+        <div class="cart-item-info">
+          <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
+          <p><strong>Harga:</strong> Rp <%= produk.Harga.toLocaleString() %></p>
+        </div>
+        <a href="/pembelian/<%= produk._id %>" class="btn-beli">Beli</a>
+      </div>
+    <% }); %>
+  </div>
+</body>
+</html>

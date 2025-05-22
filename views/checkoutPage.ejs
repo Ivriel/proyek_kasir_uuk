@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="/css/style.css">
+    
+</head>
+<body>
+    <%- include('layout/sidebar') %>
+    <div class="checkout-container">
+        <h1 class="checkout-title">Keranjang Belanja</h1>
+        <% if (keranjang && keranjang.length > 0) { %>
+            <table class="cart-items">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let total = 0 %>
+                    <% let index = 0%>
+                    <% keranjang.forEach(item => { 
+                        const subtotal = item.jumlah * item.harga;
+                        total += subtotal;
+                    %>
+                        <tr>
+                            <td><%= item.nama %></td>
+                            <td><%= item.jumlah %></td>
+                            <td>Rp <%= item.harga.toLocaleString() %></td>
+                            <td>Rp <%= subtotal.toLocaleString() %></td>
+                            <td><a href="/pembelian/delete/<%= index %>">Hapus</a></td>
+                        </tr>
+                    <% index++}) %>
+                </tbody>
+            </table>
+            <div class="total">
+                Total: Rp <%= total.toLocaleString() %>
+            </div>
+            <a href="/pembelian/pembayaran" class="btn-pay">Bayar</a>
+        <% } else { %>
+            <p>Keranjang belanja kosong</p>
+            <a href="/produk/pelanggan">Belanja Sekarang!</a>
+        <% } %>
+    </div>
+</body>
+</html>

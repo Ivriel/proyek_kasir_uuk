@@ -56,9 +56,10 @@ const authController = {
             if(!user) {
                 return res.status(400).send("Username atau password salah")
             }
-            console.log(username)
-            console.log(password)
+          
+            // tempat check username pw
 
+            
             // Validate password
             const validPassword = await bcrypt.compare(password, user.password)
             if (!validPassword) {

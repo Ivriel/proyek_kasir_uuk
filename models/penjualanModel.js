@@ -5,7 +5,7 @@ const penjualanSchema = new mongoose.Schema({
         type:Date,
         required:true
     },
-    TotalHarga: {
+    TotalBiaya: {
         type:Number,
         required:true
     },
