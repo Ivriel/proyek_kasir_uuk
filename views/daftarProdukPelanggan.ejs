@@ -17,7 +17,7 @@
           <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
           <p><strong>Harga:</strong> Rp <%= produk.Harga.toLocaleString() %></p>
         </div>
-        <a href="/pembelian/<%= produk._id %>" class="btn-beli">Beli</a>
+        <a href="/pembelian/<%= produk._id %>" class="btn-keranjang">Tambah ke keranjang</a>
       </div>
     <% }); %>
   </div>

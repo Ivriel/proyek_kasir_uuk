@@ -16,7 +16,7 @@ const pembelianController = {
             
             if(keranjang.find(item => item.produk_id === produk_id)) {
                 keranjang.find(item => item.produk_id === produk_id).jumlah += jumlah
-            } else {
+            } else {// masukkan produk ke keranjang
                 keranjang.push(
                     {
                     produk_id: produk_id,
@@ -60,22 +60,7 @@ const pembelianController = {
             })
             await pembelian.save()
 
-            // Create PDF
-            const document = new PDFReceipt();
-            
-            // Set response headers
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `attachment; filename=invoice-${pembelian.id}.pdf`);
-            
-            // Pipe the PDF to response
-            document.pipe(res);
-
-            // Add content to PDF
-            document.fontSize(25).text('KasirKita', 100, 80)
-            document.fontSize(12).text(`Invoice #:${pembelian.id}`, 100, 120)
-            document.text(`Date: ${pembelian.TanggalPenjualan}`, 100, 140)
-            
-            let y = 180;
+            // Save all detail penjualan first
             for (const produk of req.session.keranjang) {
                 const subtotal = produk.jumlah * produk.harga
                 const detailpenjualan = new detailPenjualan({
@@ -85,6 +70,27 @@ const pembelianController = {
                     Subtotal: subtotal
                 })
                 await detailpenjualan.save()
+            }
+
+            // Clear cart before generating PDF
+            const cartData = [...req.session.keranjang];
+            req.session.keranjang = [];
+
+            // Bikin PDF
+            const document = new PDFReceipt();
+            
+            // Set response headers
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', `attachment; filename=invoice-${pembelian.id}.pdf`);
+            
+            // Add content to PDF
+            document.fontSize(25).text('KasirKita', 100, 80)
+            document.fontSize(12).text(`Invoice ID #:${pembelian.id}`, 100, 120)
+            document.text(`Date: ${pembelian.TanggalPenjualan}`, 100, 140)
+            
+            let y = 180;
+            for (const produk of cartData) {
+                const subtotal = produk.jumlah * produk.harga
                 document.text(produk.nama, 100, y)
                 document.text(produk.jumlah.toString(), 300, y)
                 document.text(`Rp ${subtotal.toLocaleString()}`, 400, y)
@@ -94,11 +100,17 @@ const pembelianController = {
             // Total harga 
             document.text(`Total: Rp ${pembelian.TotalBiaya.toLocaleString()}`, 400, y + 20)
             
+            // Add a script to redirect after download
+            document.text('', 100, y + 60); // Add some space
+            document.text('Redirecting to products page...', 100, y + 80);
+            
+            // Pipe the PDF to response
+            document.pipe(res);
+            
             // Finalize PDF
             document.end();
+
             
-            // Clear cart after successful PDF generation
-            req.session.keranjang = [];
         } catch (error) {
             console.error("Cannot run getPembayaranProduk: ", error)
             res.redirect('/pembelian/checkout')
