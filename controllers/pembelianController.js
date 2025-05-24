@@ -3,6 +3,7 @@ const Produk = require("../models/produkModel")
 const detailPenjualan = require("../models/detailpenjualanModel")
 const Pelanggan = require("../models/pelangganModel")
 const PDFReceipt = require('pdfkit')
+const PDFDocumentTable = require('pdfkit-table')
 
 const pembelianController = {
     pembelianProduk: async(req,res) => {
@@ -165,6 +166,45 @@ const pembelianController = {
         } catch (error) {
             console.error("Error fetching detail penjualan histori: ",error)
             res.status(500).send("Error fetching detail penjualan histori")
+        }
+    },
+    generateHistoriPDF: async(req, res) => {
+        try {
+            const pembelian = await Pembelian.find();
+    
+            const doc = new PDFDocumentTable({ margin: 50 });
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=histori-penjualan.pdf');
+            doc.pipe(res);
+    
+            const table = {
+                title: "Histori Penjualan",
+                subtitle: `Generated on: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric' })}, ${new Date().toLocaleTimeString('id-ID')}`,
+                headers: [
+                    { label: "No", property: 'no', width: 40 },
+                    { label: "ID Penjualan", property: 'id', width: 120 },
+                    { label: "Tanggal", property: 'tanggal', width: 100 },
+                    { label: "Pelanggan ID", property: 'pelanggan', width: 180 },
+                    { label: "Total Biaya", property: 'total', width: 100 }
+                ],
+                datas: pembelian.map((item, i) => ({
+                    no: i + 1,
+                    id: item._id.toString().slice(-8),
+                    tanggal: new Date(item.TanggalPenjualan).toLocaleDateString('id-ID'),
+                    pelanggan: item.PelangganID?._id?.toString() || '-',
+                    total: `Rp ${item.TotalBiaya.toLocaleString('id-ID')}`
+                }))
+            };
+    
+            await doc.table(table, {
+                prepareHeader: () => doc.font('Helvetica-Bold'),
+                prepareRow: (row, i) => doc.font('Helvetica').fontSize(10)
+            });
+    
+            doc.end();
+        } catch (error) {
+            console.error("Error generating histori PDF:", error);
+            res.status(500).send("Error generating PDF");
         }
     }
 }
