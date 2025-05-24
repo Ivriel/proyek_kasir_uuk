@@ -182,14 +182,14 @@ const pembelianController = {
                 subtitle: `Generated on: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric' })}, ${new Date().toLocaleTimeString('id-ID')}`,
                 headers: [
                     { label: "No", property: 'no', width: 40 },
-                    { label: "ID Penjualan", property: 'id', width: 120 },
+                    { label: "ID Penjualan", property: 'id', width: 140 },
                     { label: "Tanggal", property: 'tanggal', width: 100 },
                     { label: "Pelanggan ID", property: 'pelanggan', width: 180 },
                     { label: "Total Biaya", property: 'total', width: 100 }
                 ],
                 datas: pembelian.map((item, i) => ({
                     no: i + 1,
-                    id: item._id.toString().slice(-8),
+                    id: item._id.toString(),
                     tanggal: new Date(item.TanggalPenjualan).toLocaleDateString('id-ID'),
                     pelanggan: item.PelangganID?._id?.toString() || '-',
                     total: `Rp ${item.TotalBiaya.toLocaleString('id-ID')}`
@@ -205,6 +205,44 @@ const pembelianController = {
         } catch (error) {
             console.error("Error generating histori PDF:", error);
             res.status(500).send("Error generating PDF");
+        }
+    },
+    generateDetailHistoryPDF: async(req,res)=> {
+        try {
+            const detailpenjualan = await detailPenjualan.find()
+            const doc = new PDFDocumentTable({ margin: 50 });   
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=histori-detail-penjualan.pdf');
+            doc.pipe(res);
+            const table = {
+                title:"Histori Detail Penjualan",
+                subtitle: `Generated on: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric' })}, ${new Date().toLocaleTimeString('id-ID')}`,
+                headers: [
+                    { label: "No", property: 'no', width: 20 },
+                    {label: "ID Detail Penjualan", property:'id',width:140},
+                    { label: "ID Penjualan", property: 'idpenjualan', width: 140},
+                    { label: "ID Produk", property: 'idproduk', width: 140 },
+                    {label: "Jumlah Produk",property:'jumlahproduk',width:60},
+                    {label:"Subtotal",property:'subtotal',width:100}
+                ],
+                datas: detailpenjualan.map((item, i) => ({
+                    no: i + 1,
+                    id: item._id.toString(),
+                    idpenjualan: item.PenjualanID?._id?.toString() || '-',
+                    idproduk: item.ProdukID?._id?.toString() || '-',
+                    jumlahproduk: item.JumlahProduk,
+                    subtotal: `Rp ${item.Subtotal.toLocaleString('id-ID')}`
+                }))
+            }
+            await doc.table(table, {
+                prepareHeader: () => doc.font('Helvetica-Bold'),
+                prepareRow: (row, i) => doc.font('Helvetica').fontSize(10)
+            });
+    
+            doc.end();
+        } catch (error) {
+            console.error("Error generated detail histori PDF:", error);
+            res.status(500).send("Error generating PDF")
         }
     }
 }
