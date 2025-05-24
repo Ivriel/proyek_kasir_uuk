@@ -28,6 +28,10 @@ app.use(
         }
     })
 )
+app.use((req,res,next)=> {
+    res.locals.user = req.session.user || null;
+    next()
+})
 
 // Move these BEFORE routes
 app.use(express.json())

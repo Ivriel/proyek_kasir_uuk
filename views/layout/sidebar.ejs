@@ -3,14 +3,19 @@
     <h4>Role: <%= user.role %></h4>
     <hr class="sidebar-divider"/>
     <nav>
+        <% if(user.role === "Admin" || user.role ==="Petugas") { %>
         <ul>
             <li><a href="/produk" class="<%= path === '/produk' ? 'active' : '' %>">Daftar Produk</a></li>
             <li><a href="/produk/tambah" class="<%= path === '/produk/tambah' ? 'active' : '' %>">Tambah Produk</a></li>
             <li><a href="/pembelian/history" class="<%= path === '/pembelian/history' ? 'active' : '' %>">Histori Penjualan</a></li>
             <li><a href="/pembelian/detailpenjualanhistory" class="<%= path === '/pembelian/detailpenjualanhistory' ? 'active' : '' %>">Histori Detail Penjualan</a></li>
+        </ul>
+        <% } else if(user.role === "Pelanggan") {%>
+        <ul>
             <li><a href="/produk/pelanggan" class="<%= path === '/produk/pelanggan' ? 'active' : '' %>">Daftar Produk Pelanggan</a></li>
             <li><a href="/pembelian/checkout" class="<%= path === '/pembelian/checkout' ? 'active' : '' %>">Keranjang</a></li>
         </ul>
+        <% } %>
     </nav>
     <form action="/auth/logout" method="GET" class="logout-form">
         <button type="submit" class="logout-form-button">Logout</button>
