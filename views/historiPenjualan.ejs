@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histori Penjualan</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="histori-penjualan-body">
+    <%- include('layout/sidebar') %>
+    <div class="content-container">
+        <a href="" class="pdf-print">Cetak PDF</a>
+    </div>
+    <table class="histori-penjualan-items">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID_Penjualan</th>
+                <th>Tanggal</th>
+                <th>Pelanggan ID</th>
+                <th>Total Biaya</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% pembelian.forEach((pembelian,index)=>{ %>
+                <tr>
+                    <td><%- index + 1%></td>
+                    <td><%- pembelian._id || '-' %></td>
+                    <td> <%- pembelian.TanggalPenjualan
+                        ? new Date(pembelian.TanggalPenjualan).toLocaleDateString('id-ID', { weekday: 'long' }) + ', ' +
+                          new Date(pembelian.TanggalPenjualan).toLocaleDateString('id-ID') + ' ' +
+                          new Date(pembelian.TanggalPenjualan).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+                        : '-' %></td>
+                    <td><%- pembelian.PelangganID || '-' %></td>
+                    <td>Rp <%- pembelian.TotalBiaya.toLocaleString() || '-' %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

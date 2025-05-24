@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histori Detail Penjualan</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="histori-detail-penjualan-body">
+    <%- include('layout/sidebar') %>
+    <a href="" class="pdf-print">Cetak PDF</a>
+    <table class="histori-detail-penjualan-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID Detail Penjualan</th>
+                <th>ID Penjualan</th>
+                <th>ID Produk</th>
+                <th>Jumlah Produk</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% detailPenjualan.forEach((detailPenjualan,index)=>{ %>
+                <tr>
+                    <td><%- index + 1%></td>
+                    <td><%- detailPenjualan._id || '-'%></td>
+                    <td><%- detailPenjualan.PenjualanID || '-'%></td>
+                    <td><%- detailPenjualan.ProdukID || '-' %></td>
+                    <td><%- detailPenjualan.JumlahProduk %></td>
+                    <td>Rp <%- detailPenjualan.Subtotal.toLocaleString() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

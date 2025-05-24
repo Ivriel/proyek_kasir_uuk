@@ -5,6 +5,8 @@ const checkSession = require("../middleware/checkSession")
 
 router.get("/checkout",checkSession,pembelianController.getCheckout)
 router.get("/pembayaran",checkSession,pembelianController.getPembayaranProduk)
+router.get("/history",checkSession,pembelianController.showHistory)
+router.get("/detailpenjualanhistory",checkSession,pembelianController.showDetailPenjualanHistori)
 router.get("/delete/:id",checkSession,pembelianController.deleteCartItem)
 router.get("/:id",checkSession,pembelianController.pembelianProduk)
 

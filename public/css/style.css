@@ -483,6 +483,77 @@ button:hover,
     min-height: 100vh;
     background-color: #f4f4f4;
 }
+.histori-penjualan-items {
+    width: calc(100% - 270px); /* 270px left margin + 200px right margin */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 270px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    table-layout: fixed;
+}
+.histori-penjualan-items th, .histori-penjualan-items td {
+    border: 1px solid #000;
+    padding: 12px;
+}
+.histori-penjualan-items th {
+    background-color: lime;
+}
+.histori-penjualan-items th:nth-child(1), .histori-penjualan-items td:nth-child(1) {
+    text-align: center;
+    width:70px ;
+}
+.histori-penjualan-items th:nth-child(2), .histori-penjualan-items td:nth-child(2) {
+    width: 200px;
+}
+.histori-penjualan-items th:nth-child(3), .histori-penjualan-items td:nth-child(3) {
+    width: 150px;
+}
+.histori-penjualan-items th:nth-child(4), .histori-penjualan-items td:nth-child(4) {
+    width: 180px;
+}
+.histori-penjualan-items th:nth-child(5), .histori-penjualan-items td:nth-child(5) {
+    width: 100px;
+}
+.histori-detail-penjualan-table {
+    margin-left: 270px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    table-layout: fixed;
+}
+.histori-detail-penjualan-table th, .histori-detail-penjualan-table td {
+    border: 1px solid #000;
+    padding: 12px;
+}
+.histori-detail-penjualan-table th {
+    background-color: lime;
+}
+.histori-detail-penjualan-table th:nth-child(1), .histori-detail-penjualan-table td:nth-child(1) {
+    text-align: center;
+}
+.histori-detail-penjualan-table td:nth-child(5) {
+    text-align: center;
+}
+.pdf-print {
+    margin-left: 270px;
+    text-decoration: none;
+    color: white;
+    background-color: #0056b3;
+    padding: 12px 30px;
+    border-radius: 6px;
+}
+.histori-detail-penjualan-body {
+    margin-top: 30px;
+}
+.histori-penjualan-body {
+    margin-top: 30px;
+}
 .cart-items {
     width: 100%;
     border-collapse: collapse;
@@ -533,4 +604,23 @@ button:hover,
 }
 .cart-items thead {
     border-radius: 8px;
+}
+.btn-pay {
+    display: block;
+    width: 100%;
+    height: 50px;
+    padding: 8px;
+    margin-top: 10px;
+    background-color: limegreen;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+.btn-pay:hover {
+    background-color: lime;
 }

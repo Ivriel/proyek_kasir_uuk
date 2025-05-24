@@ -1,6 +1,7 @@
 const Pembelian = require("../models/penjualanModel") // pembelian dinamai dari POV Pelanggan
 const Produk = require("../models/produkModel")
 const detailPenjualan = require("../models/detailpenjualanModel")
+const Pelanggan = require("../models/pelangganModel")
 const PDFReceipt = require('pdfkit')
 
 const pembelianController = {
@@ -69,6 +70,9 @@ const pembelianController = {
                     JumlahProduk: produk.jumlah,
                     Subtotal: subtotal
                 })
+                const produk_decrement = await Produk.findById(produk.produk_id)
+                produk_decrement.Stok -= produk.jumlah
+                await produk_decrement.save()
                 await detailpenjualan.save()
             }
 
@@ -86,7 +90,7 @@ const pembelianController = {
             // Add content to PDF
             document.fontSize(25).text('KasirKita', 100, 80)
             document.fontSize(12).text(`Invoice ID #:${pembelian.id}`, 100, 120)
-            document.text(`Date: ${pembelian.TanggalPenjualan}`, 100, 140)
+            document.text(`Date: ${pembelian.TanggalPenjualan.toLocaleDateString('id-ID',{weekday:'long'})}, ${pembelian.TanggalPenjualan.toLocaleDateString()} ${pembelian.TanggalPenjualan.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`, 100, 140)
             
             let y = 180;
             for (const produk of cartData) {
@@ -100,9 +104,6 @@ const pembelianController = {
             // Total harga 
             document.text(`Total: Rp ${pembelian.TotalBiaya.toLocaleString()}`, 400, y + 20)
             
-            // Add a script to redirect after download
-            document.text('', 100, y + 60); // Add some space
-            document.text('Redirecting to products page...', 100, y + 80);
             
             // Pipe the PDF to response
             document.pipe(res);
@@ -124,6 +125,46 @@ const pembelianController = {
         } catch (error) {
             console.error("Cannot delete cart item: ", error)
             res.redirect('/pembelian/checkout')
+        }
+    },
+    showHistory: async(req,res)=> {
+        try {
+            const pembelian = await Pembelian.find()
+           
+             const dataPembelian = pembelian.map(data => {
+                return {
+                    ...data.toObject(),
+                    PelangganID: data.PelangganID ? data.PelangganID._id : 'Unknown'
+                };
+            });
+
+            res.render('historiPenjualan', { 
+                pembelian: dataPembelian,
+                path: '/pembelian/history',
+                user: req.session.user
+            });
+        } catch (error) {
+            console.error("Error fetching pembelian history:", error);
+            res.status(500).send("Error fetching penjualan history");
+        }
+    },
+    showDetailPenjualanHistori: async(req,res) => {
+        try {
+            const detailPenjualanItems = await detailPenjualan.find()
+            const detailPenjualanData = detailPenjualanItems.map(data => {
+                return {
+                    ...data.toObject()
+                }
+            })
+            console.log(detailPenjualanData)
+            res.render('historiDetailPenjualan',{
+                detailPenjualan:detailPenjualanData,
+                path:'/pembelian/detailpenjualanhistory',
+                user:req.session.user
+            })
+        } catch (error) {
+            console.error("Error fetching detail penjualan histori: ",error)
+            res.status(500).send("Error fetching detail penjualan histori")
         }
     }
 }
