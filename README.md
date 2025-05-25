@@ -21,8 +21,8 @@ Kamis, 15 Mei 2025 - Jumat, 23 Mei 2025
 # Waktu rilis
 Jumat, 23 Mei 2025
 
-<h1>Technologies</h1>
-<p align="center">
+<h1 align="center">Technologies</h1>
+<p align="center" style="margin-top:20px;">
   <span style="display: inline-block; margin-right: 15px;">
     <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/nodejslogo-removebg-preview.png" alt="Logo NodeJS" width="300">
   </span>
