@@ -24,10 +24,10 @@ Jumat, 23 Mei 2025
 <h1 align="center">Technologies</h1>
 <p align="center" style="margin-top:20px;">
   <span style="display: inline-block; margin-right: 15px;">
-    <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/nodejslogo-removebg-preview.png" alt="Logo NodeJS" width="300">
+    <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/nodejslogo-removebg-preview.png" alt="Logo NodeJS" width="200">
   </span>
   <span style="display: inline-block; margin-right: 15px;">
-    <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/expressjslogo-removebg-preview.png" alt="Logo ExpressJS" width="300">
+    <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/expressjslogo-removebg-preview.png" alt="Logo ExpressJS" width="200">
   </span>
   <span style="display: inline-block; margin-right: 15px;">
     <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/mongodblogo-removebg-preview.png" alt="Logo MongoDB" width="200">
