@@ -29,7 +29,7 @@ Jumat, 23 Mei 2025
   <span style="display: inline-block; margin-right: 15px;">
     <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/expressjslogo-removebg-preview.png" alt="Logo ExpressJS" width="300">
   </span>
-  <span style="display: inline-block; margin-left:50px;">
+  <span style="display: inline-block; margin-left:530px;">
     <img src="https://raw.githubusercontent.com/Ivriel/Ivriel/refs/heads/main/mongodblogo-removebg-preview.png" alt="Logo MongoDB" width="300">
   </span>
 </p>
