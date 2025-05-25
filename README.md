@@ -9,6 +9,7 @@ Aplikasi web ini berfungsi sebagai e-commerce untuk pengguna dengan role pelangg
 Aplikasi web ini dilengkapi dengan autentikasi dan middleware untuk mengecek dan mengijinkan pengguna yang sudah terdaftar untuk mengakses 
 web dengan hak akses yang sesuai dengan rolenya.
 </p>
+
 # Fitur
 - Login dan registrasi multi role (Admin, Petugas, dan Pelanggan)
 - Cetak struk pembelian (khusus pelanggan) dan juga laporan penjualan serta detail penjualan (khusus admin dan petugas)
