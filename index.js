@@ -15,8 +15,6 @@ app.set("views",path.join(__dirname,"views"))
 app.use(express.static(path.join(__dirname,"public")))
 
 
-
-// Add session middleware BEFORE routes
 app.use(
     session({
         secret:"project-uuk-kasir",
@@ -33,12 +31,12 @@ app.use((req,res,next)=> {
     next()
 })
 
-// Move these BEFORE routes
+
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(userMiddleware)
 
-// Routes should come AFTER all middleware
+
 const authRoutes = require("./routes/authRoutes")
 const produkRoutes = require("./routes/produkRoutes")
 const pembelianRoutes = require("./routes/pembelianRoutes")

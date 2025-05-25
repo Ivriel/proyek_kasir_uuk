@@ -34,7 +34,7 @@
                             <td><%= item.jumlah %></td>
                             <td>Rp <%= item.harga.toLocaleString() %></td>
                             <td>Rp <%= subtotal.toLocaleString() %></td>
-                            <td><a href="/pembelian/delete/<%= index %>">Hapus</a></td>
+                            <td><a href="/pembelian/delete/<%= index %>" class="delete-item-cart">Hapus</a></td>
                         </tr>
                     <% index++}) %>
                 </tbody>

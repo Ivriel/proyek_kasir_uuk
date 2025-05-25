@@ -548,6 +548,9 @@ button:hover,
     padding: 12px 30px;
     border-radius: 6px;
 }
+.pdf-print:hover {
+    background-color: #007bff;
+}
 .histori-detail-penjualan-body {
     margin-top: 30px;
 }
@@ -563,12 +566,13 @@ button:hover,
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .cart-items th, .cart-items td {
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     padding: 12px;
     text-align: left;
 }
 .cart-items th {
-    background-color: #f4f4f4;
+    background-color: #012632;
+    color: white;
     font-weight: bold;
 }
 .total {
@@ -623,4 +627,13 @@ button:hover,
 }
 .btn-pay:hover {
     background-color: lime;
+}
+.delete-item-cart {
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    background-color: red;
+    border-radius:6px;
+    padding: 8px 30px;
+    font-weight: bold;
 }
