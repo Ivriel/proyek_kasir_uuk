@@ -15,11 +15,6 @@ web dengan hak akses yang sesuai dengan rolenya.
 - Otomatis tidak menampilkan produk yang stoknya kosong ke halaman daftar produk untuk pengguna
 - Tambah ke keranjang dan checkout (khusus pelanggan)
 
-# Waktu pengerjaan (8 Hari)
-Kamis, 15 Mei 2025 - Jumat, 23 Mei 2025 
-
-# Waktu rilis
-Jumat, 23 Mei 2025
 
 <h1 align="center">Technologies</h1>
 <p align="center" style="margin-top:20px;">
