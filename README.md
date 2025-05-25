@@ -4,11 +4,11 @@
 
 
 # Tentang projek
-Projek ini adalah projek aplikasi web kasir dengan nama KasirKita. Projek ini digunakan untuk sebagai ujian berbasis proyek.
+<p align="justify">Projek ini adalah projek aplikasi web kasir dengan nama KasirKita. Projek ini digunakan untuk sebagai ujian berbasis proyek.
 Aplikasi web ini berfungsi sebagai e-commerce untuk pengguna dengan role pelanggan untuk berbelanja dan mereka akan mendapatkan pdf sebagai struk setelah checkout. Kemudian untuk role admin dan petugas, mereka bisa CRUD produk dan melihat laporan penjualan serta detail penjualan.
 Aplikasi web ini dilengkapi dengan autentikasi dan middleware untuk mengecek dan mengijinkan pengguna yang sudah terdaftar untuk mengakses 
 web dengan hak akses yang sesuai dengan rolenya.
-
+</p>
 # Fitur
 - Login dan registrasi multi role (Admin, Petugas, dan Pelanggan)
 - Cetak struk pembelian (khusus pelanggan) dan juga laporan penjualan serta detail penjualan (khusus admin dan petugas)
