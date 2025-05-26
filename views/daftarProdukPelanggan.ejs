@@ -17,10 +17,88 @@
           <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
           <p><strong>Harga:</strong> Rp <%= produk.Harga.toLocaleString() %></p>
           <p><strong>Stok:</strong> <%= produk.Stok.toLocaleString() %></p>
+          <p><strong>Jumlah Beli:</strong></p>
         </div>
-        <a href="/pembelian/<%= produk._id %>" class="btn-keranjang">Tambah ke keranjang</a>
+        <form action="/pembelian/<%= produk._id %>" method="GET" class="quantity-form">
+          <div class="input-buy-number">
+            <button type="button" class="quantity-btn minus" onclick="decrementQuantity(this)">-</button>
+            <input type="number" class="jumlah-beli-input" name="jumlah" value="1" min="1" max="<%= produk.Stok %>" data-product-id="<%= produk._id %>">
+            <button type="button" class="quantity-btn plus" onclick="incrementQuantity(this)">+</button>
+          </div>
+          <button type="submit" class="btn-keranjang">Tambah ke keranjang</button>
+        </form>
       </div>
     <% }); %>
   </div>
+
+  <script>
+    // Function to save quantity to localStorage
+    function saveQuantity(productId, quantity) {
+      const quantities = JSON.parse(localStorage.getItem('productQuantities') || '{}');
+      quantities[productId] = quantity;
+      localStorage.setItem('productQuantities', JSON.stringify(quantities));
+    }
+
+    // Function to load quantity from localStorage
+    function loadQuantity(productId) {
+      const quantities = JSON.parse(localStorage.getItem('productQuantities') || '{}');
+      return quantities[productId] || 1;
+    }
+
+    // Load saved quantities when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('.jumlah-beli-input');
+      inputs.forEach(input => {
+        const productId = input.dataset.productId;
+        const savedQuantity = loadQuantity(productId);
+        input.value = savedQuantity;
+      });
+    });
+
+    function incrementQuantity(button) {
+      const input = button.parentElement.querySelector('input');
+      const max = parseInt(input.getAttribute('max'));
+      const currentValue = parseInt(input.value);
+      if (currentValue < max) {
+        input.value = currentValue + 1;
+        saveQuantity(input.dataset.productId, input.value);
+      }
+    }
+
+    function decrementQuantity(button) {
+      const input = button.parentElement.querySelector('input');
+      const currentValue = parseInt(input.value);
+      if (currentValue > 1) {
+        input.value = currentValue - 1;
+        saveQuantity(input.dataset.productId, input.value);
+      }
+    }
+
+    // Save quantity when manually changed
+    document.querySelectorAll('.jumlah-beli-input').forEach(input => {
+      input.addEventListener('change', function() {
+        const value = parseInt(this.value);
+        const max = parseInt(this.getAttribute('max'));
+        const min = parseInt(this.getAttribute('min'));
+        
+        // Ensure value is within bounds
+        if (value < min) this.value = min;
+        if (value > max) this.value = max;
+        
+        saveQuantity(this.dataset.productId, this.value);
+      });
+    });
+
+    // Clear quantity for specific product after adding to cart
+    document.querySelectorAll('.quantity-form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        const input = this.querySelector('.jumlah-beli-input');
+        const productId = input.dataset.productId;
+        const quantities = JSON.parse(localStorage.getItem('productQuantities') || '{}');
+        delete quantities[productId];
+        localStorage.setItem('productQuantities', JSON.stringify(quantities));
+      });
+    });
+  </script>
 </body>
 </html>

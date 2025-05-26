@@ -647,3 +647,33 @@ button:hover,
     text-align: center;
     margin-left: 270px;
 }
+.input-buy-number {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.jumlah-beli-input {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+/* Remove spinner buttons from number input */
+.jumlah-beli-input::-webkit-inner-spin-button,
+.jumlah-beli-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.jumlah-beli-input[type=number] {
+    -moz-appearance: textfield;
+}

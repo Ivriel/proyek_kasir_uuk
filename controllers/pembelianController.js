@@ -9,7 +9,7 @@ const pembelianController = {
     pembelianProduk: async(req,res) => {
         try {
             const produk_id = req.params.id
-            const jumlah = 1
+            const jumlah = parseInt(req.query.jumlah) || 1 // Get quantity from query parameter, default to 1
             const harga = await Produk.findById(produk_id).select("Harga")
             const nama = await Produk.findById(produk_id).select("NamaProduk")
             
