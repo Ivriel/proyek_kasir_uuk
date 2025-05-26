@@ -26,8 +26,8 @@
                     <% let total = 0 %>
                     <% let index = 0%>
                     <% keranjang.forEach(item => { 
-                        const subtotal = item.jumlah * item.harga;
-                        total += subtotal;
+                        const subtotal = item.jumlah * item.harga; // subtotal buat tiap produk
+                        total += subtotal; // total semuanya
                     %>
                         <tr>
                             <td><%= item.nama %></td>

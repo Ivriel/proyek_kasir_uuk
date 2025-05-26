@@ -16,6 +16,7 @@
         <div class="cart-item-info">
           <p><strong>Nama Produk:</strong> <%= produk.NamaProduk %></p>
           <p><strong>Harga:</strong> Rp <%= produk.Harga.toLocaleString() %></p>
+          <p><strong>Stok:</strong> <%= produk.Stok.toLocaleString() %></p>
         </div>
         <a href="/pembelian/<%= produk._id %>" class="btn-keranjang">Tambah ke keranjang</a>
       </div>

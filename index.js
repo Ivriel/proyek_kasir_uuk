@@ -22,7 +22,7 @@ app.use(
         saveUninitialized:false,
         cookie: {
             secure:false,
-            maxAge:1000 * 60 * 60
+            maxAge:1000 * 60 * 60 // 1 jam pakai milidetik
         }
     })
 )
@@ -45,7 +45,7 @@ app.use("/auth",authRoutes)
 app.use("/produk",produkRoutes)
 app.use("/pembelian",pembelianRoutes)
 
-app.get("/",(req,res)=> {
+app.get("/",(req,res)=> { // buat mengarahkan halaman pertama kali ke login page
     res.redirect("/auth/login")
 })
 

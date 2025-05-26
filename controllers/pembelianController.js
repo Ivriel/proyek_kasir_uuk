@@ -13,12 +13,12 @@ const pembelianController = {
             const harga = await Produk.findById(produk_id).select("Harga")
             const nama = await Produk.findById(produk_id).select("NamaProduk")
             
-            // Inisialisasi keranjang . diisi dari req session keranjang atau array kosong kalau re.session keranjang belum terisi
-            let keranjang = req.session.keranjang || [] // keranjang setelah session itu variabel bebas
+            // Inisialisasi array . diisi dari req session keranjang atau array kosong kalau req session keranjang belum terisi
+            let keranjang = req.session.keranjang || [] 
             
-            if(keranjang.find(item => item.produk_id === produk_id)) {
-                keranjang.find(item => item.produk_id === produk_id).jumlah += jumlah
-            } else {// masukkan produk ke keranjang
+            if(keranjang.find(item => item.produk_id === produk_id)) { // buat ngecek apakah produk dengan id yang sama udah pernah ditambahkan
+                keranjang.find(item => item.produk_id === produk_id).jumlah += jumlah // kalau udah berarti tambah jumlahnhya
+            } else {// kalau belum masukkan produk baru ke keranjang
                 keranjang.push(
                     {
                     produk_id: produk_id,
@@ -28,7 +28,7 @@ const pembelianController = {
                 })
             }
             
-            // Kalau belum ada req session keranjang, bikin. Kalauudah ada , tumpuk.
+            // Kalau belum ada req session keranjang, bikin. Kalau udah ada , tumpuk pakai data baru.
             req.session.keranjang = keranjang
             res.redirect("/produk/pelanggan")
         } catch (error) {
@@ -36,10 +36,11 @@ const pembelianController = {
         }
     },
     getCheckout: async(req,res) => {
+        // ambil data keranjang yang udah di set. kalau gada datanya diganti pakai array kosongan
         try {
             const keranjang = req.session.keranjang || []
             res.render('checkoutPage', {
-                path: '/pembelian/checkout',
+                path: '/pembelian/checkout', // buat nandain halaman aktif
                 user: req.session.user,
                 keranjang: keranjang
             })
@@ -49,11 +50,11 @@ const pembelianController = {
         }
     },
     getPembayaranProduk: async(req,res) => {
-        try {
+        try { // ngitung total pembelian
             let total = 0;
             req.session.keranjang.forEach(produk => {
-                const subtotal = produk.jumlah * produk.harga;
-                total += subtotal;
+                const subtotal = produk.jumlah * produk.harga; // harga per produk dikali jumlah dibelinya
+                total += subtotal; // total semuanya 
             });
             const pembelian = new Pembelian({
                 TanggalPenjualan: new Date(),
@@ -62,23 +63,24 @@ const pembelianController = {
             })
             await pembelian.save()
 
-            // Save all detail penjualan first
-            for (const produk of req.session.keranjang) {
-                const subtotal = produk.jumlah * produk.harga
+            // Simpan dulu semua detail penjualan 
+            for (const produk of req.session.keranjang) { // jabarka  semua produk di keranjang
+                const subtotal = produk.jumlah * produk.harga 
                 const detailpenjualan = new detailPenjualan({
                     PenjualanID: pembelian.id,
                     ProdukID: produk.produk_id,
                     JumlahProduk: produk.jumlah,
                     Subtotal: subtotal
                 })
-                const produk_decrement = await Produk.findById(produk.produk_id)
+                const produk_decrement = await Produk.findById(produk.produk_id) // nyari id buat ngurangin stok
                 produk_decrement.Stok -= produk.jumlah
                 await produk_decrement.save()
                 await detailpenjualan.save()
             }
 
-            // Clear cart before generating PDF
+            // salin data keranjang buat ditaruh PDF pakai spread operator...
             const cartData = [...req.session.keranjang];
+                 // Bersihkan dulu sebelum di checkout
             req.session.keranjang = [];
 
             // Bikin PDF
@@ -92,8 +94,9 @@ const pembelianController = {
             document.fontSize(25).text('KasirKita', 100, 80)
             document.fontSize(12).text(`Invoice ID #:${pembelian.id}`, 100, 120)
             document.text(`Date: ${pembelian.TanggalPenjualan.toLocaleDateString('id-ID',{weekday:'long'})}, ${pembelian.TanggalPenjualan.toLocaleDateString()} ${pembelian.TanggalPenjualan.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`, 100, 140)
+            document.text(`Customer ID: ${pembelian.PelangganID}`, 100, 160)
             
-            let y = 180;
+            let y = 200;
             for (const produk of cartData) {
                 const subtotal = produk.jumlah * produk.harga
                 document.text(produk.nama, 100, y)
@@ -106,7 +109,7 @@ const pembelianController = {
             document.text(`Total: Rp ${pembelian.TotalBiaya.toLocaleString()}`, 400, y + 20)
             
             
-            // Pipe the PDF to response
+            // Set ke response http biar bisa di downloadw
             document.pipe(res);
             
             // Finalize PDF
@@ -121,7 +124,7 @@ const pembelianController = {
     deleteCartItem: async(req,res) => {
         try {
             const index = parseInt(req.params.id)
-            req.session.keranjang.splice(index, 1)
+            req.session.keranjang.splice(index, 1) // posisi item yang akan dihapus, hapus 1 elemen di posisi itu 
             res.redirect('/pembelian/checkout')
         } catch (error) {
             console.error("Cannot delete cart item: ", error)
@@ -132,9 +135,9 @@ const pembelianController = {
         try {
             const pembelian = await Pembelian.find()
            
-             const dataPembelian = pembelian.map(data => {
+             const dataPembelian = pembelian.map(data => { // iterasi semua data dari database
                 return {
-                    ...data.toObject(),
+                    ...data.toObject(), // convert ke data object js biasa
                     PelangganID: data.PelangganID ? data.PelangganID._id : 'Unknown'
                 };
             });

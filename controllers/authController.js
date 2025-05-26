@@ -11,7 +11,7 @@ const authController = {
     },
     register: async(req,res) => {
         try {
-            const {nama,alamat,telepon,username,password} = req.body
+            const {nama,alamat,telepon,username,password} = req.body // buat ngambil dari input elemen html
 
             // cek apakah username ada
             const existingUser = await User.findOne({username: username})
@@ -19,10 +19,10 @@ const authController = {
                 return res.status(400).send("Username sudah digunakan")
             }
 
-            // hash password
+            // hashing password buat enkripsi
             const hashedPassword = await bcrypt.hash(password,10)
             
-            // buat user baru (pelanggan)
+            // buat user baru (otomatis pelanggan)
             const newPelanggan = new Pelanggan({
                 NamaPelanggan: nama,
                 Alamat: alamat,
@@ -46,12 +46,12 @@ const authController = {
         try {
             const {username,password} = req.body
             
-            // Validate input
+            // Validasi input
             if (!username || !password) {
                 return res.status(400).send("Username dan password harus diisi")
             }
 
-            // Find user
+            // Cari user di database berdasarkan username 
             const user = await User.findOne({username: username})
             if(!user) {
                 return res.status(400).send("Username atau password salah")
@@ -60,13 +60,13 @@ const authController = {
             // tempat check username pw
 
             
-            // Validate password
+            // Validasi password. bandingkan pw yang diinput sama pw yang ada
             const validPassword = await bcrypt.compare(password, user.password)
             if (!validPassword) {
                 return res.status(400).send("Username atau password salah")
             }
 
-            // Set session data
+            // Set session data yang baru login
             req.session.user = {
                 id: user._id,
                 username: user.username,
@@ -83,7 +83,7 @@ const authController = {
         }
     },
     logout: async(req,res) => {
-        req.session.destroy((err)=>{
+        req.session.destroy((err)=>{ // metode express buat hapus sesi user
             if(err) {
                 console.error(err)
                 return res.status(500).send("Gagal Logout")

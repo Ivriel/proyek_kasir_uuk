@@ -22,7 +22,7 @@ const produkController = {
     },
     tambahProduk: async(req,res)=> {
         try {
-           const {namaproduk,harga,stok} = req.body
+           const {namaproduk,harga,stok} = req.body // buat ambil data dari input
            const gambarPath = req.file ? req.file.filename : null
            const produk = new Produk({
             Gambar:gambarPath,
