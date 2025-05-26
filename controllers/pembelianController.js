@@ -133,11 +133,23 @@ const pembelianController = {
     },
     showHistory: async(req,res)=> {
         try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = 10;
+            const skip = (page - 1) * limit;
+
+            // Get total count for pagination
+            const totalItems = await Pembelian.countDocuments();
+            const totalPages = Math.ceil(totalItems / limit);
+
+            // Get paginated data
             const pembelian = await Pembelian.find()
+                .skip(skip)
+                .limit(limit)
+                .sort({ TanggalPenjualan: -1 }); // Sort by date, newest first
            
-             const dataPembelian = pembelian.map(data => { // iterasi semua data dari database
+            const dataPembelian = pembelian.map(data => {
                 return {
-                    ...data.toObject(), // convert ke data object js biasa
+                    ...data.toObject(),
                     PelangganID: data.PelangganID ? data.PelangganID._id : 'Unknown'
                 };
             });
@@ -145,7 +157,13 @@ const pembelianController = {
             res.render('historiPenjualan', { 
                 pembelian: dataPembelian,
                 path: '/pembelian/history',
-                user: req.session.user
+                user: req.session.user,
+                pagination: {
+                    currentPage: page,
+                    totalPages: totalPages,
+                    hasNextPage: page < totalPages,
+                    hasPrevPage: page > 1
+                }
             });
         } catch (error) {
             console.error("Error fetching pembelian history:", error);
@@ -154,18 +172,37 @@ const pembelianController = {
     },
     showDetailPenjualanHistori: async(req,res) => {
         try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = 10;
+            const skip = (page - 1) * limit;
+
+            // Get total count for pagination
+            const totalItems = await detailPenjualan.countDocuments();
+            const totalPages = Math.ceil(totalItems / limit);
+
+            // Get paginated data
             const detailPenjualanItems = await detailPenjualan.find()
+                .skip(skip)
+                .limit(limit)
+                .sort({ _id: -1 }); // Sort by ID, newest first
+
             const detailPenjualanData = detailPenjualanItems.map(data => {
                 return {
                     ...data.toObject()
                 }
-            })
-            console.log(detailPenjualanData)
+            });
+
             res.render('historiDetailPenjualan',{
-                detailPenjualan:detailPenjualanData,
+                detailPenjualan: detailPenjualanData,
                 path:'/pembelian/detailpenjualanhistory',
-                user:req.session.user
-            })
+                user: req.session.user,
+                pagination: {
+                    currentPage: page,
+                    totalPages: totalPages,
+                    hasNextPage: page < totalPages,
+                    hasPrevPage: page > 1
+                }
+            });
         } catch (error) {
             console.error("Error fetching detail penjualan histori: ",error)
             res.status(500).send("Error fetching detail penjualan histori")
