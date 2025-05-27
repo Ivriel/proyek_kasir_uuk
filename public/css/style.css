@@ -542,12 +542,17 @@ button:hover,
     width: 120px;
 }
 .pdf-print {
-    margin-left: 270px;
+    margin-left: 0;
     text-decoration: none;
     color: white;
-    background-color: #0056b3;
-    padding: 12px 30px;
+    background-color: blue;
+    height: 50px;
+    width: 150px;
+    text-align: center;
     border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .pdf-print:hover {
     background-color: #007bff;
@@ -704,4 +709,66 @@ button:hover,
 .pagination-info {
     font-size: 16px;
     color: #333;
+}
+.content-container-penjualan, .content-container-detail-penjualan {
+    display: flex;
+    align-items: center;
+    margin: 0px 270px;
+    padding: 0;
+    gap: 20px;
+}
+
+.search-content-penjualan,.search-content-detail-penjualan {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.search, .search-detail {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 250px;
+    transition: border-color 0.3s ease;
+}
+
+.search:focus, .search-detail:focus {
+    outline: none;
+    border-color: #012632;
+    box-shadow: 0 0 0 2px rgba(1, 38, 50, 0.1);
+}
+
+.btn-search, .btn-search-detail {
+    padding: 10px 20px;
+    background-color: #012632;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.btn-search:hover, .btn-search-detail:hover {
+    background-color: #034b5e;
+}
+.pdf-print-detail-penjualan {
+    background-color: blue;
+    margin-left: 0px;
+    color: white;
+    width: 140px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.pdf-print-detail-penjualan:hover {
+    background-color: #007bff;
 }

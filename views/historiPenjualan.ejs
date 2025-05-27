@@ -9,8 +9,12 @@
 <body class="histori-penjualan-body">
     <%- include('layout/sidebar') %>
     <h1 class="histori-penjualan-title">Histori Penjualan</h1>
-    <div class="content-container">
+    <div class="content-container-penjualan">
         <a href="/pembelian/history/pdf" class="pdf-print">Cetak PDF</a>
+        <form class="search-content-penjualan" action="/pembelian/history" method="GET">
+            <input type="text" class="search" name="search" id="search" placeholder="Cari Data" value="<%= searchQuery %>">
+            <button type="submit" class="btn-search">Cari</button>
+        </form>
     </div>
     <table class="histori-penjualan-items">
         <thead>
@@ -42,13 +46,13 @@
     <!-- Pagination Controls -->
     <div class="pagination">
         <% if (pagination.hasPrevPage) { %>
-            <a href="/pembelian/history?page=<%= pagination.currentPage - 1 %>" class="pagination-btn">Previous</a>
+            <a href="/pembelian/history?page=<%= pagination.currentPage - 1 %><%= searchQuery ? '&search=' + searchQuery : '' %>" class="pagination-btn">Previous</a>
         <% } %>
         
         <span class="pagination-info">Page <%= pagination.currentPage %> of <%= pagination.totalPages %></span>
         
         <% if (pagination.hasNextPage) { %>
-            <a href="/pembelian/history?page=<%= pagination.currentPage + 1 %>" class="pagination-btn">Next</a>
+            <a href="/pembelian/history?page=<%= pagination.currentPage + 1 %><%= searchQuery ? '&search=' + searchQuery : '' %>" class="pagination-btn">Next</a>
         <% } %>
     </div>
 </body>

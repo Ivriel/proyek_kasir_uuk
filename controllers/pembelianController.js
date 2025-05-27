@@ -136,21 +136,62 @@ const pembelianController = {
             const page = parseInt(req.query.page) || 1;
             const limit = 10;
             const skip = (page - 1) * limit;
+            const searchQuery = req.query.search || '';
 
-            // Get total count for pagination
-            const totalItems = await Pembelian.countDocuments();
-            const totalPages = Math.ceil(totalItems / limit);
+            let pembelian;
+            let totalItems;
 
-            // Get paginated data
-            const pembelian = await Pembelian.find()
-                .skip(skip)
-                .limit(limit)
-                .sort({ TanggalPenjualan: -1 }); // Sort by date, newest first
+            if (searchQuery) {
+                // First get all pembelian records
+                const allPembelian = await Pembelian.find()
+                    .sort({ TanggalPenjualan: -1 });
+
+                // Filter results in memory for multiple fields
+                const filteredPembelian = allPembelian.filter(item => {
+                    const idMatch = item._id.toString().toLowerCase().includes(searchQuery.toLowerCase());
+                    const pelangganMatch = item.PelangganID.toString().toLowerCase().includes(searchQuery.toLowerCase());
+                    
+                    // Format date for searching
+                    const formattedDate = new Date(item.TanggalPenjualan).toLocaleDateString('id-ID', { 
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }).toLowerCase();
+                    
+                    const dateMatch = formattedDate.includes(searchQuery.toLowerCase());
+                    
+                    // Format total biaya for searching
+                    const formattedTotal = item.TotalBiaya.toLocaleString('id-ID').toLowerCase();
+                    const totalMatch = formattedTotal.includes(searchQuery.toLowerCase());
+
+                    return idMatch || pelangganMatch || dateMatch || totalMatch;
+                });
+
+                // Get total count of filtered results
+                totalItems = filteredPembelian.length;
+
+                // Apply pagination after filtering
+                const startIndex = skip;
+                const endIndex = skip + limit;
+                pembelian = filteredPembelian.slice(startIndex, endIndex);
+            } else {
+                // If no search query, use normal pagination
+                totalItems = await Pembelian.countDocuments();
+                pembelian = await Pembelian.find()
+                    .skip(skip)
+                    .limit(limit)
+                    .sort({ TanggalPenjualan: -1 });
+            }
+
+            const totalPages = Math.max(1, Math.ceil(totalItems / limit));
            
             const dataPembelian = pembelian.map(data => {
                 return {
                     ...data.toObject(),
-                    PelangganID: data.PelangganID ? data.PelangganID._id : 'Unknown'
+                    PelangganID: data.PelangganID ? data.PelangganID.toString() : 'Unknown'
                 };
             });
 
@@ -163,7 +204,8 @@ const pembelianController = {
                     totalPages: totalPages,
                     hasNextPage: page < totalPages,
                     hasPrevPage: page > 1
-                }
+                },
+                searchQuery: searchQuery
             });
         } catch (error) {
             console.error("Error fetching pembelian history:", error);
@@ -175,16 +217,44 @@ const pembelianController = {
             const page = parseInt(req.query.page) || 1;
             const limit = 10;
             const skip = (page - 1) * limit;
+            const searchQuery = req.query['search-detail'] || '';
 
-            // Get total count for pagination
-            const totalItems = await detailPenjualan.countDocuments();
-            const totalPages = Math.ceil(totalItems / limit);
+            let detailPenjualanItems;
+            let totalItems;
 
-            // Get paginated data
-            const detailPenjualanItems = await detailPenjualan.find()
-                .skip(skip)
-                .limit(limit)
-                .sort({ _id: -1 }); // Sort by ID, newest first
+            if (searchQuery) {
+                // First get all detail penjualan records
+                const allDetailPenjualan = await detailPenjualan.find()
+                    .sort({ _id: -1 });
+
+                // Filter results in memory for multiple fields
+                const filteredDetailPenjualan = allDetailPenjualan.filter(item => {
+                    const idMatch = item._id.toString().toLowerCase().includes(searchQuery.toLowerCase());
+                    const penjualanIdMatch = item.PenjualanID?.toString().toLowerCase().includes(searchQuery.toLowerCase());
+                    const produkIdMatch = item.ProdukID?.toString().toLowerCase().includes(searchQuery.toLowerCase());
+                    const jumlahMatch = item.JumlahProduk.toString().includes(searchQuery);
+                    const subtotalMatch = item.Subtotal.toLocaleString('id-ID').toLowerCase().includes(searchQuery.toLowerCase());
+
+                    return idMatch || penjualanIdMatch || produkIdMatch || jumlahMatch || subtotalMatch;
+                });
+
+                // Get total count of filtered results
+                totalItems = filteredDetailPenjualan.length;
+
+                // Apply pagination after filtering
+                const startIndex = skip;
+                const endIndex = skip + limit;
+                detailPenjualanItems = filteredDetailPenjualan.slice(startIndex, endIndex);
+            } else {
+                // If no search query, use normal pagination
+                totalItems = await detailPenjualan.countDocuments();
+                detailPenjualanItems = await detailPenjualan.find()
+                    .skip(skip)
+                    .limit(limit)
+                    .sort({ _id: -1 });
+            }
+
+            const totalPages = Math.max(1, Math.ceil(totalItems / limit));
 
             const detailPenjualanData = detailPenjualanItems.map(data => {
                 return {
@@ -201,7 +271,8 @@ const pembelianController = {
                     totalPages: totalPages,
                     hasNextPage: page < totalPages,
                     hasPrevPage: page > 1
-                }
+                },
+                searchQuery: searchQuery
             });
         } catch (error) {
             console.error("Error fetching detail penjualan histori: ",error)
