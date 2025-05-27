@@ -207,9 +207,7 @@ button:hover {
 
 .daftar-produk-actions {
     display: flex;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 20px;
+    gap: 10px;
 }
 .action-button-daftar-produk-edit {
     color: white;
@@ -239,7 +237,7 @@ button:hover {
     z-index: 500;
     justify-content: start;
     margin-left: 28px;
-    margin-bottom: 0;
+    padding-bottom: 20px;
 }
 
 .cart-item {
@@ -771,4 +769,29 @@ button:hover,
 }
 .pdf-print-detail-penjualan:hover {
     background-color: #007bff;
+}
+.daftar-produk-table {
+    margin-left: 120px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    table-layout: fixed;
+    text-align: center;
+}
+.daftar-produk-table th, .daftar-produk-table td {
+    border: 1px solid #000;
+    padding: 12px;
+}
+.daftar-produk-table th:nth-child(1), .daftar-produk-table td:nth-child(1) {
+    width: 200px;
+}
+.daftar-produk-table td:nth-child(1) {
+    padding-left: 20px;
+    height: 100px;
+}
+.daftar-produk-table td:nth-child(5) {
+    width: 180px;
 }

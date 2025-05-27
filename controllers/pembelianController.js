@@ -133,6 +133,7 @@ const pembelianController = {
     },
     showHistory: async(req,res)=> {
         try {
+            // ambil parameter
             const page = parseInt(req.query.page) || 1;
             const limit = 10;
             const skip = (page - 1) * limit;
@@ -141,17 +142,18 @@ const pembelianController = {
             let pembelian;
             let totalItems;
 
+            // ambil data dari value search
             if (searchQuery) {
-                // First get all pembelian records
+                
                 const allPembelian = await Pembelian.find()
                     .sort({ TanggalPenjualan: -1 });
 
-                // Filter results in memory for multiple fields
+                 
                 const filteredPembelian = allPembelian.filter(item => {
                     const idMatch = item._id.toString().toLowerCase().includes(searchQuery.toLowerCase());
                     const pelangganMatch = item.PelangganID.toString().toLowerCase().includes(searchQuery.toLowerCase());
                     
-                    // Format date for searching
+                    
                     const formattedDate = new Date(item.TanggalPenjualan).toLocaleDateString('id-ID', { 
                         weekday: 'long',
                         year: 'numeric',
@@ -163,22 +165,22 @@ const pembelianController = {
                     
                     const dateMatch = formattedDate.includes(searchQuery.toLowerCase());
                     
-                    // Format total biaya for searching
+                    
                     const formattedTotal = item.TotalBiaya.toLocaleString('id-ID').toLowerCase();
                     const totalMatch = formattedTotal.includes(searchQuery.toLowerCase());
 
                     return idMatch || pelangganMatch || dateMatch || totalMatch;
                 });
 
-                // Get total count of filtered results
+                
                 totalItems = filteredPembelian.length;
 
-                // Apply pagination after filtering
+                // Buat pagination setelah difilter
                 const startIndex = skip;
                 const endIndex = skip + limit;
                 pembelian = filteredPembelian.slice(startIndex, endIndex);
             } else {
-                // If no search query, use normal pagination
+                // Pakai pagination kalau ga ada search value
                 totalItems = await Pembelian.countDocuments();
                 pembelian = await Pembelian.find()
                     .skip(skip)
@@ -223,11 +225,11 @@ const pembelianController = {
             let totalItems;
 
             if (searchQuery) {
-                // First get all detail penjualan records
+            
                 const allDetailPenjualan = await detailPenjualan.find()
                     .sort({ _id: -1 });
 
-                // Filter results in memory for multiple fields
+        
                 const filteredDetailPenjualan = allDetailPenjualan.filter(item => {
                     const idMatch = item._id.toString().toLowerCase().includes(searchQuery.toLowerCase());
                     const penjualanIdMatch = item.PenjualanID?.toString().toLowerCase().includes(searchQuery.toLowerCase());
@@ -238,15 +240,14 @@ const pembelianController = {
                     return idMatch || penjualanIdMatch || produkIdMatch || jumlahMatch || subtotalMatch;
                 });
 
-                // Get total count of filtered results
+            
                 totalItems = filteredDetailPenjualan.length;
 
-                // Apply pagination after filtering
                 const startIndex = skip;
                 const endIndex = skip + limit;
                 detailPenjualanItems = filteredDetailPenjualan.slice(startIndex, endIndex);
             } else {
-                // If no search query, use normal pagination
+     
                 totalItems = await detailPenjualan.countDocuments();
                 detailPenjualanItems = await detailPenjualan.find()
                     .skip(skip)

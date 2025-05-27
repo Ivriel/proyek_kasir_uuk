@@ -1,13 +1,13 @@
 const multer = require("multer")
 
-let storage = multer.diskStorage({ // konfigurasi cara simpan file 
-    destination:function(req,file,cb) { // tempat simpan
-        cb(null,"public/image") // callback function buat nyimpan ke tempat
+let storage = multer.diskStorage({ 
+    destination:function(req,file,cb) { 
+        cb(null,"public/image") 
     },
-    filename:function(req,file,cb) { // kasih nama file yang disimpan
+    filename:function(req,file,cb) { 
         cb(null, Date.now() + "-" + file.originalname) 
     }
 })
 
-let uploadImage = multer({storage:storage}) // pakai storage yang udah diatur tadi
+let uploadImage = multer({storage:storage}) 
 module.exports = uploadImage
