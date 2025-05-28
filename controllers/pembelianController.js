@@ -133,7 +133,6 @@ const pembelianController = {
     },
     showHistory: async(req,res)=> {
         try {
-            // ambil parameter
             const page = parseInt(req.query.page) || 1;
             const limit = 10;
             const skip = (page - 1) * limit;
